@@ -18,4 +18,10 @@ const insertExercise = function(exercise, callBack) {
     });
 }
 
-module.exports = {getLastWorkout, getAllWorkouts, insertExercise}
+const updateWorkout = function(id, exercise, callBack) {
+    db.findByIdAndUpdate(id, exercise).then(result => {
+        callBack(result);
+    });
+}
+
+module.exports = {getLastWorkout, getAllWorkouts, insertExercise, updateWorkout}
