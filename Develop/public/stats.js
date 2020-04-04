@@ -219,7 +219,7 @@ function calculateTotalWeight(data) {
     total.push(exercises.reduce((totalCount, { weight = 0 }) => totalCount + weight, 0));
   });
   return total;
-}}
+}
 
 function workoutNames(data) {
   let workouts = [];
