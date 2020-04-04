@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const db = require('./database');
 const seed = require('./seeders/seed');
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
