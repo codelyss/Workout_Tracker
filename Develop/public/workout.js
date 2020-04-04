@@ -8,9 +8,9 @@ async function initWorkout() {
 
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
-      totalDuration: lastWorkout.totalDuration,
+      totalDuration: getTotalDuration(lastWorkout),
       numExercises: lastWorkout.exercises.length,
-      ...tallyExercises(lastWorkout.exercises)
+      ...tallyExercises(lastWorkout)
     };
 
     renderWorkoutSummary(workoutSummary);
@@ -19,19 +19,57 @@ async function initWorkout() {
   }
 }
 
-function tallyExercises(exercises) {
-  const tallied = exercises.reduce((acc, curr) => {
-    if (curr.type === "resistance") {
-      acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
-      acc.totalSets = (acc.totalSets || 0) + curr.sets;
-      acc.totalReps = (acc.totalReps || 0) + curr.reps;
-    } else if (curr.type === "cardio") {
-      acc.totalDistance = (acc.totalDistance || 0) + curr.distance;
-    }
-    return acc;
-  }, {});
-  return tallied;
+function getTotalDuration(lastWorkout) {
+  let total = 0;
+  for (var i = 0; i < lastWorkout.exercises.length; i++) {
+    total += lastWorkout.exercises[i].duration;
+  }
+  return total;
 }
+
+function tallyExercises(lastWorkout) {
+  let tWeight = 0;
+  let tSets = 0;
+  let tReps = 0;
+  let tDistance = 0;
+  let exercises = lastWorkout.exercises;
+  for (var i = 0; i < exercises.length; i++) {
+    let tex = exercises[i];
+    let theType = tex.type;
+    if (theType === "resistance") {
+      if (tex.weight) {tWeight += tex.weight;}
+      if (tex.sets) {tSets += tex.sets;}
+      if (tex.reps) {tReps += tex.reps;}
+    }
+    else if (theType === "cardio") {
+      if (tex.distance) {tDistance += tex.distance;}
+    }
+  }
+
+  let workoutObj = {
+    totalWeight: tWeight,
+    totalSets: tSets,
+    totalReps: tReps,
+    totalDistance: tDistance
+  };
+
+  return workoutObj;
+}
+
+// function tallyExercises(exercises) {
+//   alert(exercises[0].duration)
+//   const tallied = exercises.reduce((acc, curr) => {
+//     if (curr.type === "resistance") {
+//       acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
+//       acc.totalSets = (acc.totalSets || 0) + curr.sets;
+//       acc.totalReps = (acc.totalReps || 0) + curr.reps;
+//     } else if (curr.type === "cardio") {
+//       acc.totalDistance = (acc.totalDistance || 0) + curr.distance;
+//     }
+//     return acc;
+//   }, {});
+//   return tallied;
+// }
 
 function formatDate(date) {
   const options = {
