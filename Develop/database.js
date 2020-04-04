@@ -6,4 +6,16 @@ const getLastWorkout = function(callBack) {
     });
 };
 
-module.exports = {getLastWorkout}
+const getAllWorkouts = function(callBack) {
+    db.find().then(result => {
+        callBack(result);
+    });
+}
+
+const insertExercise = function(exercise, callBack) {
+    db.insertMany(exercise).then(result => {
+        callBack(result);
+    });
+}
+
+module.exports = {getLastWorkout, getAllWorkouts, insertExercise}

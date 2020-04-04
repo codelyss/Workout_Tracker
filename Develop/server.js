@@ -37,8 +37,22 @@ app.get('/api/workouts', (req, res) => {
     });
 });
 
+app.get('/api/workouts/range', (req, res) => {
+    db.getAllWorkouts(function(allWorkouts) {
+        res.send(allWorkouts);
+    });
+});
+
 app.put('/api/workouts/:workoutId', (req, res) => {
-    console.log(req.params);
+    let exers = [];
+    exers.push(req.body);
+    let obj = {
+        day: Date.now(),
+        exercises: exers
+    }
+    db.insertExercise(obj, function(result) {
+        res.send(result);
+    });
 });
 
 app.listen(PORT, () => {
